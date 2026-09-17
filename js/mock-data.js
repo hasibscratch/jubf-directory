@@ -8,7 +8,7 @@ const DEMO_ALUMNI = [
   {
     id: '1',
     name: 'Hasibul Islam',
-    batch: '37th',
+    batch: '34th',
     subject: 'Geography & Environment',
     bank: 'The World Bank',
     position: 'Consultant — GEMS Focal',
