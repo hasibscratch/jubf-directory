@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JU Bankers' Forum — Alumni Directory</title>
+  <meta name="description" content="Alumni directory of Jahangirnagar University graduates now serving in the banking sector of Bangladesh.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <div class="logo-icon">JB</div>
+      <span>JU Bankers' Forum</span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="directory.html">Directory</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="register.html">Join</a></li>
+    </ul>
+    <div class="nav-auth" id="nav-auth"></div>
+    <div class="nav-toggle" onclick="document.getElementById('nav-links').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🎓 Jahangirnagar University Alumni</div>
+    <h1>JU Bankers'<br><span>Forum</span></h1>
+    <p>Connecting the proud alumni of Jahangirnagar University who are now shaping Bangladesh's banking sector.</p>
+    <div class="hero-actions">
+      <a href="directory.html" class="btn btn-secondary btn-lg">Browse Directory →</a>
+      <a href="register.html" class="btn btn-outline btn-lg" style="border-color:rgba(255,255,255,.6);color:white">Join the Forum</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-grid" id="stats-grid">
+    <div class="stat-item"><div class="stat-number" id="stat-members">—</div><div class="stat-label">Members</div></div>
+    <div class="stat-item"><div class="stat-number" id="stat-banks">—</div><div class="stat-label">Banks Represented</div></div>
+    <div class="stat-item"><div class="stat-number" id="stat-batches">—</div><div class="stat-label">Batches</div></div>
+    <div class="stat-item"><div class="stat-number" id="stat-depts">—</div><div class="stat-label">Departments</div></div>
+  </div>
+</div>
+
+<!-- WELCOME SECTION -->
+<div class="section-alt" style="padding:3.5rem 0">
+  <div class="section" style="max-width:900px;text-align:center">
+    <div class="section-tag">Welcome</div>
+    <h2 style="font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;color:var(--green-dark);margin-bottom:1rem">
+      Where JU Meets Banking Excellence
+    </h2>
+    <p style="font-size:1.05rem;color:var(--gray-600);max-width:680px;margin:0 auto 2rem">
+      The JU Bankers' Forum is a community of former Jahangirnagar University students who are now
+      serving across the banking industry of Bangladesh — from central banks to commercial banks,
+      development finance institutions, and microfinance bodies. This directory helps you reconnect,
+      collaborate, and celebrate our shared heritage.
+    </p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="directory.html" class="btn btn-primary">View All Members</a>
+      <a href="about.html" class="btn btn-outline">Learn More About Us</a>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURE HIGHLIGHTS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-tag">Features</div>
+    <h2>Everything you need to stay connected</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-card">
+      <div class="about-card-icon">🔍</div>
+      <h3>Smart Directory</h3>
+      <p>Search by name, filter by batch, department, current bank, hall, and blood group to find the right alumnus quickly.</p>
+    </div>
+    <div class="about-card">
+      <div class="about-card-icon">🔒</div>
+      <h3>Privacy Protected</h3>
+      <p>Contact details — phone and address — are visible only to registered members. Public visitors see a limited profile.</p>
+    </div>
+    <div class="about-card">
+      <div class="about-card-icon">⚡</div>
+      <h3>Always Up-to-Date</h3>
+      <p>Data syncs automatically from our KoboToolbox registration database so new joiners appear without manual updates.</p>
+    </div>
+    <div class="about-card">
+      <div class="about-card-icon">🤝</div>
+      <h3>Community</h3>
+      <p>Whether you need a reference, a collaboration, or simply want to reconnect — the forum is your bridge.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA STRIP -->
+<div style="background:var(--green-dark);padding:3rem 1.5rem;text-align:center;color:white">
+  <h2 style="font-size:1.8rem;font-weight:800;margin-bottom:.75rem">Are you a JU Banker?</h2>
+  <p style="opacity:.85;margin-bottom:1.5rem;max-width:500px;margin-left:auto;margin-right:auto">
+    Add yourself to the directory so your fellow alumni can find you.
+    Registration takes less than 3 minutes.
+  </p>
+  <a href="register.html" class="btn btn-secondary btn-lg">Register Now →</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>JU Bankers' Forum</strong> — Alumni of Jahangirnagar University</p>
+  <p style="margin-top:.4rem">🌐 Jahangirnagar University, Savar, Dhaka, Bangladesh</p>
+  <p style="margin-top:.75rem;font-size:.75rem">
+    For support: <a href="mailto:jubf@example.com">jubf@example.com</a>
+    &nbsp;|&nbsp; Data powered by <a href="https://www.kobotoolbox.org" target="_blank">KoboToolbox</a>
+  </p>
+</footer>
+
+<script src="js/app.js"></script>
+<script>
+  // Load live stats
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const stats = await API.getStats();
+      document.getElementById('stat-members').textContent  = stats.total_members;
+      document.getElementById('stat-banks').textContent    = stats.banks_represented;
+      document.getElementById('stat-batches').textContent  = stats.batches;
+      document.getElementById('stat-depts').textContent    = stats.departments;
+    } catch (e) {
+      console.warn('Stats unavailable:', e.message);
+    }
+  });
+</script>
+</body>
+</html>

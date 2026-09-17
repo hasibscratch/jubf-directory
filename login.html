@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — JU Bankers' Forum</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <div class="logo-icon">JB</div>
+      <span>JU Bankers' Forum</span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="directory.html">Directory</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="register.html">Join</a></li>
+    </ul>
+    <div class="nav-auth" id="nav-auth"></div>
+  </div>
+</nav>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+
+    <div class="auth-logo">
+      <div class="logo-icon">JB</div>
+      <h2>JU Bankers' Forum</h2>
+      <p>Member Portal</p>
+    </div>
+
+    <!-- TABS -->
+    <div class="form-tabs">
+      <button class="form-tab active" id="tab-login" onclick="switchTab('login')">Login</button>
+      <button class="form-tab" id="tab-signup" onclick="switchTab('signup')">Create Account</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <form id="login-form" onsubmit="doLogin(event)">
+      <div class="form-group">
+        <label for="login-username">Username</label>
+        <input type="text" id="login-username" placeholder="Your username" required autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password">
+      </div>
+      <div id="login-msg" class="form-msg"></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;margin-top:.5rem" id="login-btn">
+        Login
+      </button>
+      <p style="text-align:center;margin-top:1rem;font-size:.85rem;color:var(--gray-600)">
+        Don't have an account? <a href="#" onclick="switchTab('signup')">Create one</a> using your invite code.
+      </p>
+    </form>
+
+    <!-- SIGNUP FORM -->
+    <form id="signup-form" onsubmit="doSignup(event)" style="display:none">
+      <div class="form-group">
+        <label for="reg-username">Choose a Username</label>
+        <input type="text" id="reg-username" placeholder="e.g. john_banker" required minlength="3" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label for="reg-email">Email Address</label>
+        <input type="email" id="reg-email" placeholder="your@email.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="reg-password">Password (min. 8 characters)</label>
+        <input type="password" id="reg-password" placeholder="Choose a strong password" required minlength="8" autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label for="reg-invite">Invite Code</label>
+        <input type="text" id="reg-invite" placeholder="Enter your invite code" required autocomplete="off"
+               style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+        <span style="font-size:.75rem;color:var(--gray-600)">Contact the forum admin for your invite code.</span>
+      </div>
+      <div id="signup-msg" class="form-msg"></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;margin-top:.5rem" id="signup-btn">
+        Create Account
+      </button>
+      <p style="text-align:center;margin-top:1rem;font-size:.85rem;color:var(--gray-600)">
+        Already have an account? <a href="#" onclick="switchTab('login')">Login</a>
+      </p>
+    </form>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>JU Bankers' Forum</strong> — Member Portal</p>
+</footer>
+
+<script src="js/app.js"></script>
+<script>
+  // Redirect if already logged in
+  if (Auth.isLoggedIn()) window.location.href = 'directory.html';
+
+  function switchTab(tab) {
+    document.getElementById('login-form').style.display  = tab === 'login'  ? 'block' : 'none';
+    document.getElementById('signup-form').style.display = tab === 'signup' ? 'block' : 'none';
+    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+    document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
+    document.getElementById('login-msg').className  = 'form-msg';
+    document.getElementById('signup-msg').className = 'form-msg';
+  }
+
+  async function doLogin(e) {
+    e.preventDefault();
+    const btn = document.getElementById('login-btn');
+    const msg = document.getElementById('login-msg');
+    btn.disabled = true;
+    btn.textContent = 'Logging in…';
+    msg.className = 'form-msg';
+
+    try {
+      const data = await API.login(
+        document.getElementById('login-username').value,
+        document.getElementById('login-password').value
+      );
+      Auth.setToken(data.access_token, data.username, data.role);
+      showToast('Welcome back, ' + data.username + '!');
+      setTimeout(() => window.location.href = 'directory.html', 700);
+    } catch (err) {
+      msg.textContent = err.message;
+      msg.className = 'form-msg error';
+      btn.disabled = false;
+      btn.textContent = 'Login';
+    }
+  }
+
+  async function doSignup(e) {
+    e.preventDefault();
+    const btn = document.getElementById('signup-btn');
+    const msg = document.getElementById('signup-msg');
+    btn.disabled = true;
+    btn.textContent = 'Creating account…';
+    msg.className = 'form-msg';
+
+    try {
+      await API.register({
+        username:    document.getElementById('reg-username').value,
+        email:       document.getElementById('reg-email').value,
+        password:    document.getElementById('reg-password').value,
+        invite_code: document.getElementById('reg-invite').value,
+      });
+      msg.textContent = '✅ Account created! You can now log in.';
+      msg.className = 'form-msg success';
+      setTimeout(() => switchTab('login'), 1500);
+    } catch (err) {
+      msg.textContent = err.message;
+      msg.className = 'form-msg error';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Create Account';
+    }
+  }
+</script>
+</body>
+</html>
